@@ -1,0 +1,3 @@
+"""
+Módulo do jogo
+"""
