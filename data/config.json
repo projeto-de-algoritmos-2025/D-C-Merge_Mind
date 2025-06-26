@@ -1,0 +1,18 @@
+{
+  "volume_master": 0.7,
+  "volume_sfx": 0.8,
+  "volume_musica": 0.5,
+  "resolucao": [
+    1200,
+    800
+  ],
+  "fullscreen": false,
+  "alto_contraste": false,
+  "tamanho_fonte_aumentado": false,
+  "reducao_animacao": false,
+  "audio_descritivo": false,
+  "legendas": true,
+  "idioma": "pt_BR",
+  "algoritmo_favorito": "MERGE_SORT",
+  "nivel_padrao": "MEDIO"
+}

@@ -1,0 +1,18 @@
+{
+  "algoritmos_desbloqueados": [
+    "MERGE_SORT"
+  ],
+  "niveis_completados": {
+    "MERGE_SORT": [],
+    "QUICK_SORT": [],
+    "BINARY_SEARCH": []
+  },
+  "tutorial_completo": {
+    "MERGE_SORT": false,
+    "QUICK_SORT": false,
+    "BINARY_SEARCH": false
+  },
+  "pontuacao_total": 0,
+  "tempo_total_jogado": 0,
+  "primeira_vez": true
+}
