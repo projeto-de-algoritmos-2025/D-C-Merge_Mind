@@ -1,98 +1,184 @@
-import pygame
-import random
+#!/usr/bin/env python3
+"""
+Merge_Mind - Jogo Educativo sobre Algoritmos de Dividir e Conquistar
+Versão 2.0 - Completa e Profissional
+
+Este é o ponto de entrada principal do jogo que ensina algoritmos
+de dividir e conquistar de forma interativa e visual.
+
+Autores:
+- Davi de Aguiar Vieira (222006641)
+- Henrique Carvalho Neves (222006801)
+
+Disciplina: Projeto de Algoritmos
+"""
+
 import sys
-import time
+import os
+from pathlib import Path
 
-pygame.init()
-LARGURA, ALTURA = 800, 600
-TELA = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption("Jogo Merge Sort")
-FONTE = pygame.font.SysFont(None, 36)
-BRANCO = (255, 255, 255)
-AZUL = (100, 149, 237)
-VERDE = (0, 200, 0)
-VERMELHO = (200, 0, 0)
-PRETO = (0, 0, 0)
+# Adicionar o diretório src ao path para importações
+projeto_root = Path(__file__).parent
+src_path = projeto_root / "src"
+sys.path.insert(0, str(src_path))
 
-def desenhar_blocos(lista, y, cor=AZUL):
-    largura_bloco = 60
-    espaco = 10
-    x_inicial = (LARGURA - (len(lista) * (largura_bloco + espaco))) // 2
-    blocos = []
-    for i, num in enumerate(lista):
-        x = x_inicial + i * (largura_bloco + espaco)
-        pygame.draw.rect(TELA, cor, (x, y, largura_bloco, 50))
-        texto = FONTE.render(str(num), True, BRANCO)
-        TELA.blit(texto, (x + 20, y + 10))
-        blocos.append(pygame.Rect(x, y, largura_bloco, 50))
-    return blocos
+try:
+    import pygame
+    print("✓ Pygame encontrado")
+except ImportError:
+    print("❌ Erro: Pygame não encontrado!")
+    print("Instale com: pip install pygame")
+    sys.exit(1)
 
-def esperar_clique(bloco1, bloco2, valor1, valor2):
-    while True:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                if bloco1.collidepoint(evento.pos):
-                    return valor1
-                elif bloco2.collidepoint(evento.pos):
-                    return valor2
+try:
+    from src.game.manager import GameManager
+    from src.utils.config import TITULO, LARGURA, ALTURA
+    from src.utils.dados import GerenciadorDados
+    print("✓ Módulos do jogo carregados com sucesso")
+except ImportError as e:
+    print(f"❌ Erro ao importar módulos do jogo: {e}")
+    print("Verifique se todos os arquivos estão presentes")
+    sys.exit(1)
 
-def fundir_interativamente(lista1, lista2):
-    resultado = []
-    i = j = 0
-    while i < len(lista1) and j < len(lista2):
-        TELA.fill(BRANCO)
-        texto = FONTE.render("Clique no menor número:", True, PRETO)
-        TELA.blit(texto, (LARGURA // 2 - texto.get_width() // 2, 50))
-        blocos1 = desenhar_blocos([lista1[i]], 150, VERDE)
-        blocos2 = desenhar_blocos([lista2[j]], 250, VERMELHO)
-        pygame.display.flip()
 
-        escolhido = esperar_clique(blocos1[0], blocos2[0], lista1[i], lista2[j])
-        if escolhido == lista1[i]:
-            resultado.append(lista1[i])
-            i += 1
-        else:
-            resultado.append(lista2[j])
-            j += 1
-
-    resultado.extend(lista1[i:])
-    resultado.extend(lista2[j:])
-
-    TELA.fill(BRANCO)
-    texto = FONTE.render("Resultado da fusão:", True, PRETO)
-    TELA.blit(texto, (LARGURA // 2 - texto.get_width() // 2, 350))
-    desenhar_blocos(resultado, 400)
-    pygame.display.flip()
-    time.sleep(1.5)
-    return resultado
-
-def merge_sort_jogo(lista):
-    sublistas = [[num] for num in lista]
-
-    while len(sublistas) > 1:
-        nova_lista = []
-        for i in range(0, len(sublistas), 2):
-            if i + 1 < len(sublistas):
-                fundido = fundir_interativamente(sublistas[i], sublistas[i+1])
-                nova_lista.append(fundido)
+def verificar_dependencias():
+    """Verifica se todas as dependências estão instaladas"""
+    dependencias = [
+        ("pygame", "2.0.0"),
+        ("sys", None),
+        ("os", None),
+        ("json", None),
+        ("math", None),
+        ("pathlib", None),
+        ("typing", None),
+        ("enum", None),
+        ("datetime", None)
+    ]
+    
+    print("🔍 Verificando dependências...")
+    
+    for nome, versao_min in dependencias:
+        try:
+            modulo = __import__(nome)
+            if versao_min and hasattr(modulo, "__version__"):
+                print(f"✓ {nome} v{modulo.__version__}")
             else:
-                nova_lista.append(sublistas[i])
-        sublistas = nova_lista
+                print(f"✓ {nome}")
+        except ImportError:
+            print(f"❌ {nome} não encontrado")
+            return False
+    
+    return True
 
-    TELA.fill(BRANCO)
-    texto = FONTE.render("Lista ordenada!", True, PRETO)
-    TELA.blit(texto, (LARGURA // 2 - texto.get_width() // 2, 50))
-    desenhar_blocos(sublistas[0], 200)
-    pygame.display.flip()
-    time.sleep(4)
+
+def configurar_ambiente():
+    """Configura o ambiente do jogo"""
+    print("⚙️  Configurando ambiente...")
+    
+    # Criar pastas necessárias
+    pastas_necessarias = [
+        "data",
+        "assets/images",
+        "assets/sounds", 
+        "assets/fonts",
+        "assets/music"
+    ]
+    
+    for pasta in pastas_necessarias:
+        pasta_path = projeto_root / pasta
+        pasta_path.mkdir(parents=True, exist_ok=True)
+        print(f"✓ Pasta criada/verificada: {pasta}")
+    
+    # Inicializar sistema de dados
+    try:
+        dados = GerenciadorDados()
+        print("✓ Sistema de persistência inicializado")
+        return True
+    except Exception as e:
+        print(f"❌ Erro ao inicializar sistema de dados: {e}")
+        return False
+
+
+def exibir_informacoes_sistema():
+    """Exibe informações sobre o sistema e o jogo"""
+    print("\n" + "="*60)
+    print(f"🎮 {TITULO}")
+    print("="*60)
+    print(f"Resolução: {LARGURA}x{ALTURA}")
+    print(f"Python: {sys.version.split()[0]}")
+    print(f"Pygame: {pygame.version.ver}")
+    print(f"Plataforma: {sys.platform}")
+    print("="*60)
+    print("\n🎯 Algoritmos Disponíveis:")
+    print("  • Merge Sort - Aprenda ordenação por divisão e conquista")
+    print("  • Quick Sort - Domine o particionamento eficiente")  
+    print("  • Binary Search - Entenda busca em arrays ordenados")
+    print("\n📚 Recursos do Jogo:")
+    print("  • Tutorial interativo para cada algoritmo")
+    print("  • Visualização passo a passo do algoritmo")
+    print("  • Sistema de pontuação e ranking")
+    print("  • Múltiplos níveis de dificuldade")
+    print("  • Estatísticas detalhadas de performance")
+    print("  • Interface moderna e responsiva")
+    print("="*60)
+
 
 def main():
-    lista = random.sample(range(1, 30), 6)
-    merge_sort_jogo(lista)
-    pygame.quit()
+    """Função principal do jogo"""
+    print("\n🚀 Iniciando Merge_Mind...")
+    
+    # Verificar dependências
+    if not verificar_dependencias():
+        print("\n❌ Dependências não satisfeitas. Instalação necessária:")
+        print("pip install -r requirements.txt")
+        return 1
+    
+    # Configurar ambiente
+    if not configurar_ambiente():
+        print("\n❌ Falha na configuração do ambiente")
+        return 1
+    
+    # Exibir informações
+    exibir_informacoes_sistema()
+    
+    # Inicializar o jogo
+    try:
+        print("\n🎮 Iniciando jogo...")
+        game = GameManager()
+        
+        print("✓ Jogo inicializado com sucesso!")
+        print("\n🎉 Divirta-se aprendendo algoritmos!\n")
+        
+        # Executar loop principal
+        game.executar()
+        
+    except KeyboardInterrupt:
+        print("\n\n⏹️  Jogo interrompido pelo usuário")
+        return 0
+        
+    except Exception as e:
+        print(f"\n❌ Erro durante execução do jogo: {e}")
+        import traceback
+        traceback.print_exc()
+        return 1
+    
+    finally:
+        # Cleanup
+        try:
+            pygame.quit()
+            print("✓ Recursos liberados com sucesso")
+        except:
+            pass
+    
+    print("\n👋 Obrigado por jogar Merge_Mind!")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    # Configurar encoding para output
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    
+    # Executar jogo
+    exit_code = main()
+    sys.exit(exit_code)

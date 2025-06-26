@@ -1,0 +1,34 @@
+{
+  "historico": [
+    {
+      "nivel": "FACIL",
+      "elementos": 4,
+      "tempo_total": 22.076666355133057,
+      "acertos": 4,
+      "erros": 0,
+      "pontuacao": 4325,
+      "data": "2025-06-26T20:51:55.189551",
+      "completa": true
+    },
+    {
+      "nivel": "FACIL",
+      "elementos": 4,
+      "tempo_total": 18.298486709594727,
+      "acertos": 5,
+      "erros": 0,
+      "pontuacao": 5136,
+      "data": "2025-06-26T20:52:24.970350",
+      "completa": true
+    },
+    {
+      "nivel": "DIFICIL",
+      "elementos": 8,
+      "tempo_total": 33.06511211395264,
+      "acertos": 18,
+      "erros": 0,
+      "pontuacao": 37189,
+      "data": "2025-06-26T20:53:57.234092",
+      "completa": true
+    }
+  ]
+}
