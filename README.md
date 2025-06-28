@@ -8,7 +8,14 @@
 | 222006641 | Davi de Aguiar Vieira |
 | 222006801 | Henrique Carvalho Neves |
 
-## 📝 Entregas - Versão Atualizada
+## 📝 Entregas
+| Dividir e Conquistar |
+|----------|
+| [Apresentação](https://youtu.be/yfrdvrkAzu0?si=nRzgYpjoxAEbP0WL)
+---
+
+
+## 📝 Versão Atualizada
 | **D&C - Merge_Mind 2.0** |
 |---------------------------|
 | ✅ **Múltiplos Algoritmos**: Merge Sort, Quick Sort e Binary Search |
